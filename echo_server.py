@@ -3,7 +3,10 @@ from aiologger.formatters.json import (
     ExtendedJsonFormatter,
     LOG_LEVEL_FIELDNAME,
 )
-from aiologger.handlers.files import AsyncFileHandler
+from aiologger.handlers.files import (
+    AsyncTimedRotatingFileHandler,
+    RolloverInterval,
+)
 from fastapi import FastAPI
 from pydantic import BaseModel
 import logging
@@ -15,7 +18,12 @@ logger = JsonLogger.with_default_handlers(
     level=logging.INFO,
     serializer_kwargs={"indent": 4, "ensure_ascii": False},
 )
-file_handler = AsyncFileHandler(filename="logs.txt", encoding="utf-8")
+file_handler = AsyncTimedRotatingFileHandler(
+    filename="galileo_logs/log",
+    encoding="utf-8",
+    when=RolloverInterval.MINUTES,
+    interval=2
+)
 file_handler.formatter = ExtendedJsonFormatter(
     exclude_fields=[
         FUNCTION_NAME_FIELDNAME,
@@ -34,4 +42,4 @@ class Message(BaseModel):
 @app.post("/")
 async def echo(message: Message):
     await logger.info(message.message)
-    return {"echo": message.message}
+    return

@@ -8,3 +8,22 @@ force-exclude = '''
 )/
 '''
 
+[tool.poetry]
+name = "aio-log-server"
+version = "0.1.0"
+description = ""
+authors = ["AmatorAVG <agushcha@team.vtbconnect.ru>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.9,<=3.10"
+black = "^24.4.2"
+pydantic = "^2.7.4"
+aiologger = {extras = ["aiofiles"], version = "^0.7.0"}
+fastapi = "^0.111.0"
+uvicorn = "^0.30.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
